@@ -60,6 +60,7 @@ public class TileManager {
                 while (col < gamePanel.maxWorldCol) {
                     String numbers[] = line.split(" ");
 
+                    System.out.println(col);
                     int num = Integer.parseInt(numbers[col]);
 
                     mapTileNum[row][col] = num;
