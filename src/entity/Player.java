@@ -13,17 +13,22 @@ public class Player extends Entity {
     GamePanel gamePanel;
     KeyHandler keyHandler;
 
+    public final int screenX;
+    public final int screenY;
+
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+        this.screenX = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
+        this.screenY = gamePanel.screenHeight / 2  - gamePanel.tileSize / 2;
 
         setDefaultValues();
         getPlayerImage();
     }
 
     public void setDefaultValues() {
-        worldX = 100;
-        worldY = 100;
+        worldX = gamePanel.tileSize * 60;
+        worldY = gamePanel.tileSize * 10;
         speed = 4;
         direction = "down";
     }
@@ -102,7 +107,7 @@ public class Player extends Entity {
                 }
                 break;
         }
-        g2d.drawImage(image, x, y, gamePanel.tileSize, gamePanel.tileSize, null);
+        g2d.drawImage(image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
     }
 
 }
