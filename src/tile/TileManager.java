@@ -13,8 +13,8 @@ import java.io.InputStreamReader;
 public class TileManager {
 
     GamePanel gamePanel;
-    Tile[] tile;
-    int mapTileNum[][];
+    public Tile[] tile;
+    public int mapTileNum[][];
 
     public TileManager(GamePanel gamePanel) {
         this.gamePanel = gamePanel;
@@ -26,10 +26,16 @@ public class TileManager {
         tile[1] = new Tile();
         // water
         tile[2] = new Tile();
+        tile[2].collision = true;
         // rock
         tile[3] = new Tile();
+        tile[3].collision = true;
         // log
         tile[4] = new Tile();
+        tile[4].collision = true;
+        // cactus
+        tile[5] = new Tile();
+        tile[5].collision = true;
         getTileImage();
         loadMap("res/maps/map01.txt");
     }
@@ -41,6 +47,7 @@ public class TileManager {
             tile[2].image = ImageIO.read(new FileInputStream("res/tiles/water.png"));
             tile[3].image = ImageIO.read(new FileInputStream("res/tiles/rock.png"));
             tile[4].image = ImageIO.read(new FileInputStream("res/tiles/log.png"));
+            tile[5].image = ImageIO.read(new FileInputStream("res/tiles/cactus.png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -93,10 +100,10 @@ public class TileManager {
             int screenY = worldY - gamePanel.player.worldY + gamePanel.player.screenY;
 
             if (
-                worldX > gamePanel.player.worldX - gamePanel.player.screenX - gamePanel.tileSize && 
-                worldX <  gamePanel.player.worldX + gamePanel.player.screenX + gamePanel.tileSize && 
-                worldY >  gamePanel.player.worldY - gamePanel.player.screenY - gamePanel.tileSize &&
-                worldY <  gamePanel.player.worldY + gamePanel.player.screenY + gamePanel.tileSize) {
+                worldX - gamePanel.tileSize > gamePanel.player.worldX - gamePanel.player.screenX &&
+                worldX + gamePanel.tileSize <  gamePanel.player.worldX + gamePanel.player.screenX &&
+                worldY - gamePanel.tileSize >  gamePanel.player.worldY - gamePanel.player.screenY &&
+                worldY + gamePanel.tileSize <  gamePanel.player.worldY + gamePanel.player.screenY) {
                 g2d.drawImage(tile[tileNum].image, screenX, screenY, gamePanel.tileSize, gamePanel.tileSize, null);
             }
 

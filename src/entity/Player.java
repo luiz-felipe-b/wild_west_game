@@ -3,6 +3,7 @@ package entity;
 import main.GamePanel;
 import main.KeyHandler;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.io.IOException;
 import java.io.FileInputStream;
 import javax.imageio.ImageIO;
@@ -17,10 +18,14 @@ public class Player extends Entity {
     public final int screenY;
 
     public Player(GamePanel gamePanel, KeyHandler keyHandler) {
+
         this.gamePanel = gamePanel;
         this.keyHandler = keyHandler;
+
         this.screenX = gamePanel.screenWidth / 2 - gamePanel.tileSize / 2;
         this.screenY = gamePanel.screenHeight / 2  - gamePanel.tileSize / 2;
+
+        hitBox = new Rectangle(8, 16, 32, 32);
 
         setDefaultValues();
         getPlayerImage();
@@ -49,20 +54,37 @@ public class Player extends Entity {
     }
 
     public void update() {
-        if (keyHandler.upPressed) {
-            direction = "up";
-            worldY -= speed;
-        } else if (keyHandler.downPressed) {
-            direction = "down";
-            worldY += speed;
-        } else if (keyHandler.leftPressed) {
-            direction = "left";
-            worldX -= speed;
-        } else if (keyHandler.rightPressed) {
-            direction = "right";
-            worldX += speed;
-        }
         if (keyHandler.upPressed || keyHandler.downPressed || keyHandler.leftPressed || keyHandler.rightPressed) {
+            if (keyHandler.upPressed) {
+                direction = "up";
+            } else if (keyHandler.downPressed) {
+                direction = "down";
+            } else if (keyHandler.leftPressed) {
+                direction = "left";
+            } else if (keyHandler.rightPressed) {
+                direction = "right";
+            }
+
+            // Check for collision
+            colliding = false;
+            gamePanel.collisionChecker.checkTileCollision(this);
+            if (colliding == false) {
+                switch(direction) {
+                    case "up":
+                        worldY -= speed;
+                        break;
+                    case "down":
+                        worldY += speed;
+                        break;
+                    case "left":
+                        worldX -= speed;
+                        break;
+                    case "right":
+                        worldX += speed;
+                        break;
+                }
+            }
+
             spriteCounter++;
         }
         if (spriteCounter > 12) {
